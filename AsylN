@@ -76,6 +76,19 @@ test('Asylnorsk registrering', async ({ browser }) => {
    await kommunePage.getByRole('button', { name: ' Lagre' }).click();
    await kommunePage.locator('#sorting-794').click();
 
+/*  //await kommunePage.getByRole('link', { name: 'Personer', exact: true}).click();
+   await kommunePage.getByRole('link', { name: 'Personer', exact: true }).click();
+   await kommunePage.getByPlaceholder('DUF-nummer, Reg-nummer, UNHCR-nummer, fødselsnummer, navn eller fødselsdato').click();
+   await kommunePage.getByPlaceholder('DUF-nummer, Reg-nummer, UNHCR-nummer, fødselsnummer, navn eller fødselsdato').fill('988824011172');
+   await kommunePage.getByPlaceholder('DUF-nummer, Reg-nummer, UNHCR-nummer, fødselsnummer, navn eller fødselsdato').press('Enter');
+   await kommunePage.waitForTimeout(5000);
+   await kommunePage.getByRole('button', { name: 'NIR' }).click();
+   await kommunePage.getByRole('link', { name: 'Norsk for asylsøkere' }).click();
+   await kommunePage.getByRole('button', { name: 'Deltakelse' }).click();
+   await kommunePage.locator('#tilbudtetimer-content').getByRole('button', { name: ' Legg til' }).click();
+   await kommunePage.locator('datepickerformelement').filter({ hasText: 'Fra dato*' }).locator('i').nth(1).click(); */
+
+
    await page.getByLabel('Fra dato*').click();
    await page.getByRole('link', { name: '2', exact: true }).click();
    await page.getByLabel('Til dato*').click();
