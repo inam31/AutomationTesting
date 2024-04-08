@@ -26,6 +26,7 @@ test('Asylnorsk registrering', async ({ browser }) => {
   await kommunePage.goto('/');
 
  // Her kommer koden for AsylNorsk
+// Her endrer jeg ikke koden, kun kommentarer for å oppdatere. 
  
 
    await kommunePage.waitForTimeout(5000);
