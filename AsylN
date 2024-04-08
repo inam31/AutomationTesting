@@ -1,0 +1,135 @@
+import { test, expect } from '@playwright/test';
+//import { dateFormatterTodaysDate } from './utils'
+
+test('Asylnorsk registrering', async ({ browser }) => {
+
+ // imdiContext and all kommunePages inside, including imdiPage, are signed in as "imdi user".
+ const imdiContext = await browser.newContext({ storageState: 'playwright/.auth/imdi.json' });
+ const imdiPage = await imdiContext.newPage();   
+
+
+  // kommuneContext and all pages inside, including kommunePage, are signed in as "kommune user".
+  const kommuneContext = await browser.newContext({ storageState: 'playwright/.auth/kommune.json' });
+  const kommunePage = await kommuneContext.newPage();
+  // Dagens dato
+  const date = new Date();
+  const datoCorrectFormat = '0'+date.getDate() + '.' + '0'+(date.getMonth()+1) + '.' + date.getFullYear();
+  const futureDateCorrectFormat = '0'+(date.getDate()+60) + '.' + '0'+(date.getMonth()+1) + '.' + date.getFullYear();
+  const ok = date.setDate(date.getDate() + 60);
+// Funksjon for dagens dato
+  function dateFormatterTodaysDate(dateStep: number) {
+    const date = new Date();
+    return '0' + date.getDate() + '.' + '0' + (date.getMonth()+1+dateStep) + '.' + date.getFullYear();
+  }
+  
+  await imdiPage.goto('/');
+  await kommunePage.goto('/');
+
+ // Her kommer koden for AsylNorsk
+ 
+
+   await kommunePage.waitForTimeout(5000);
+   //await kommunePage.getByRole('link', { name: 'Personer', exact: true}).click();
+   await kommunePage.getByRole('link', { name: 'Personer', exact: true }).click();
+   await kommunePage.getByPlaceholder('DUF-nummer, Reg-nummer, UNHCR-nummer, fødselsnummer, navn eller fødselsdato').click();
+   await kommunePage.getByPlaceholder('DUF-nummer, Reg-nummer, UNHCR-nummer, fødselsnummer, navn eller fødselsdato').fill('988824011172');
+   await kommunePage.getByPlaceholder('DUF-nummer, Reg-nummer, UNHCR-nummer, fødselsnummer, navn eller fødselsdato').press('Enter');
+   await kommunePage.waitForTimeout(5000);
+   await kommunePage.getByRole('button', { name: 'NIR' }).click();
+   await kommunePage.getByRole('link', { name: 'Norsk for asylsøkere' }).click();
+   await kommunePage.getByRole('button', { name: 'Deltakelse' }).click();
+   await kommunePage.locator('#tilbudtetimer-content').getByRole('button', { name: ' Legg til' }).click();
+   await kommunePage.locator('datepickerformelement').filter({ hasText: 'Fra dato*' }).locator('i').nth(1).click();
+// Prøver å velge ny dato her 
+   await kommunePage.getByLabel('Fra dato*').fill(dateFormatterTodaysDate(0));
+
+   //await kommunePage.getByLabel('Select month').selectOption('2');
+   //await kommunePage.getByRole('link', { name: '28' }).click();
+   await kommunePage.locator('datepickerformelement').filter({ hasText: 'Til dato*' }).locator('i').nth(1).click();
+   await kommunePage.getByLabel('Til dato*').fill(dateFormatterTodaysDate(60));
+
+   await kommunePage.getByRole('combobox', { name: 'Select month' }).selectOption('5');
+   await kommunePage.getByRole('link', { name: '28' }).click();
+   await kommunePage.getByLabel('Antall timer*').click();
+   await kommunePage.getByLabel('Antall timer*').fill('100');
+   await kommunePage.getByRole('button', { name: ' Lagre' }).click();
+   await kommunePage.locator('#tilbudtetimerDetailsButton0').click();
+   await kommunePage.locator('#deltagelsetable-content').getByRole('button', { name: ' Legg til' }).click();
+   await kommunePage.getByPlaceholder('Velg uke').click();
+   // Velg måned
+   /*await kommunePage.getByLabel('Select month').selectOption('2');
+   await kommunePage.getByRole('row', { name: '3 15 16 17 18 19 20 21' }).getByRole('cell', { name: '3' }).click();
+   await kommunePage.getByRole('link', { name: '15' }).click();
+   await kommunePage.getByLabel('Deltatt (timer)*').click();
+   await kommunePage.getByLabel('Deltatt (timer)*').fill('39');
+   await kommunePage.getByRole('button', { name: ' Lagre' }).click();
+   await kommunePage.getByRole('button', { name: 'Deltakelse' }).click();
+   await kommunePage.getByRole('button', { name: 'Ordning' }).click();
+   await kommunePage.getByRole('button', { name: ' Legg til' }).click();
+   await kommunePage.getByRole('combobox', { name: 'Vedtakstype*' }).selectOption('FRITAK_PLIKT_NORSKASYL');
+   await kommunePage.locator('datepickerformelement i').nth(1).click();
+   await kommunePage.getByLabel('Select month').selectOption('2');
+   await kommunePage.getByRole('link', { name: '30' }).click();
+   await kommunePage.getByRole('combobox', { name: 'Resultat*' }).selectOption('INNVILG');
+   await kommunePage.getByRole('combobox', { name: 'Begrunnelse*' }).selectOption('GRUNNSKOLE_VGS_1');
+   await kommunePage.getByRole('button', { name: ' Lagre' }).click();
+   await kommunePage.locator('#sorting-794').click();
+
+   await page.getByLabel('Fra dato*').click();
+   await page.getByRole('link', { name: '2', exact: true }).click();
+   await page.getByLabel('Til dato*').click();
+   await page.getByLabel('Select month').selectOption('5');
+   await page.getByRole('link', { name: '3', exact: true }).click();
+   await page.getByLabel('Antall timer*').click();
+   await page.getByLabel('Antall timer*').fill('100');
+   await page.getByRole('button', { name: ' Lagre' }).click();
+   await page.locator('#deltagelsetable-content').getByRole('button', { name: ' Legg til' }).click();*/
+
+   await kommunePage.getByPlaceholder('Velg uke').click();
+   await kommunePage.getByLabel('Select month').selectOption('2');
+   await kommunePage.getByRole('link', { name: '25' }).click();
+   await kommunePage.getByLabel('Deltatt (timer)*').click();
+   await kommunePage.getByLabel('Deltatt (timer)*').fill('15');
+   await kommunePage.getByRole('button', { name: ' Lagre' }).click();
+   await kommunePage.getByRole('button', { name: 'Ordning' }).click();
+   await kommunePage.getByRole('button', { name: ' Legg til' }).click();
+   await kommunePage.getByLabel('Vedtakstype*').selectOption('FRITAK_PLIKT_NORSKASYL');
+   await kommunePage.getByPlaceholder('dd.mm.åååå').click();
+   await kommunePage.getByRole('link', { name: '2', exact: true }).click();
+   await kommunePage.getByLabel('Resultat*').selectOption('INNVILG');
+   await kommunePage.getByLabel('Begrunnelse*').selectOption('GRUNNSKOLE_VGS_1');
+   await kommunePage.getByRole('button', { name: ' Lagre' }).click();
+
+
+ });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
